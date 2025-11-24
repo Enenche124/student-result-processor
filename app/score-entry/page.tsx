@@ -242,84 +242,94 @@ export default function ScoreEntryPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[200px]">Student</TableHead>
-                      <TableHead>Subject</TableHead>
-                      <TableHead className="w-[100px]">CA</TableHead>
-                      <TableHead className="w-[100px]">Exam</TableHead>
-                      <TableHead className="w-[100px]">Total</TableHead>
-                      <TableHead className="w-[80px]">Grade</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {students.map((student) =>
-                      subjects.map((subject, index) => {
-                        const score = getScore(student.id, subject.id);
-                        const ca = score?.ca || 0;
-                        const exam = score?.exam || 0;
-                        const total = calculateTotal(ca, exam);
-                        const grade = calculateGrade(total);
+              <div className="overflow-x-auto -mx-2 sm:mx-0">
+                <div className="inline-block min-w-full align-middle">
+                  <Table className="min-w-[800px]">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="min-w-[150px] sticky left-0 bg-white z-10">Student</TableHead>
+                        <TableHead className="min-w-[140px]">Subject</TableHead>
+                        <TableHead className="min-w-[100px] text-center">CA</TableHead>
+                        <TableHead className="min-w-[100px] text-center">Exam</TableHead>
+                        <TableHead className="min-w-[90px] text-center">Total</TableHead>
+                        <TableHead className="min-w-[90px] text-center">Grade</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {students.map((student) =>
+                        subjects.map((subject, index) => {
+                          const score = getScore(student.id, subject.id);
+                          const ca = score?.ca || 0;
+                          const exam = score?.exam || 0;
+                          const total = calculateTotal(ca, exam);
+                          const grade = calculateGrade(total);
 
-                        return (
-                          <TableRow key={`${student.id}-${subject.id}`}>
-                            {index === 0 && (
-                              <TableCell rowSpan={subjects.length} className="font-medium">
-                                {student.name}
+                          return (
+                            <TableRow key={`${student.id}-${subject.id}`}>
+                              {index === 0 && (
+                                <TableCell 
+                                  rowSpan={subjects.length} 
+                                  className="font-medium sticky left-0 bg-white z-10 border-r"
+                                >
+                                  {student.name}
+                                </TableCell>
+                              )}
+                              <TableCell className="font-medium text-gray-700">{subject.name}</TableCell>
+                              <TableCell className="p-2">
+                                <Input
+                                  type="number"
+                                  min="0"
+                                  max="100"
+                                  value={ca}
+                                  onChange={(e) =>
+                                    handleScoreChange(student.id, subject.id, 'ca', e.target.value)
+                                  }
+                                  className="w-full min-w-[80px] text-center"
+                                  placeholder="0"
+                                />
                               </TableCell>
-                            )}
-                            <TableCell>{subject.name}</TableCell>
-                            <TableCell>
-                              <Input
-                                type="number"
-                                min="0"
-                                max="100"
-                                value={ca}
-                                onChange={(e) =>
-                                  handleScoreChange(student.id, subject.id, 'ca', e.target.value)
-                                }
-                                className="w-full"
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Input
-                                type="number"
-                                min="0"
-                                max="100"
-                                value={exam}
-                                onChange={(e) =>
-                                  handleScoreChange(student.id, subject.id, 'exam', e.target.value)
-                                }
-                                className="w-full"
-                              />
-                            </TableCell>
-                            <TableCell className="font-semibold">{total}</TableCell>
-                            <TableCell>
-                              <span
-                                className={`px-2 py-1 rounded text-sm font-semibold ${
-                                  grade === 'A'
-                                    ? 'bg-green-100 text-green-800'
-                                    : grade === 'B'
-                                    ? 'bg-blue-100 text-blue-800'
-                                    : grade === 'C'
-                                    ? 'bg-yellow-100 text-yellow-800'
-                                    : grade === 'D'
-                                    ? 'bg-orange-100 text-orange-800'
-                                    : 'bg-red-100 text-red-800'
-                                }`}
-                              >
-                                {grade}
-                              </span>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })
-                    )}
-                  </TableBody>
-                </Table>
+                              <TableCell className="p-2">
+                                <Input
+                                  type="number"
+                                  min="0"
+                                  max="100"
+                                  value={exam}
+                                  onChange={(e) =>
+                                    handleScoreChange(student.id, subject.id, 'exam', e.target.value)
+                                  }
+                                  className="w-full min-w-[80px] text-center"
+                                  placeholder="0"
+                                />
+                              </TableCell>
+                              <TableCell className="font-semibold text-center text-lg">{total}</TableCell>
+                              <TableCell className="text-center">
+                                <span
+                                  className={`inline-block px-3 py-1 rounded text-sm font-semibold min-w-[45px] ${
+                                    grade === 'A'
+                                      ? 'bg-green-100 text-green-800'
+                                      : grade === 'B'
+                                      ? 'bg-blue-100 text-blue-800'
+                                      : grade === 'C'
+                                      ? 'bg-yellow-100 text-yellow-800'
+                                      : grade === 'D'
+                                      ? 'bg-orange-100 text-orange-800'
+                                      : 'bg-red-100 text-red-800'
+                                  }`}
+                                >
+                                  {grade}
+                                </span>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
+              <p className="text-sm text-gray-500 mt-4 md:hidden">
+                💡 Tip: Scroll horizontally to view all columns
+              </p>
             </CardContent>
           </Card>
         )}
