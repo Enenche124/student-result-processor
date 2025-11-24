@@ -280,12 +280,12 @@ export default function ScoreEntryPage() {
                                   type="number"
                                   min="0"
                                   max="100"
-                                  value={ca}
+                                  value={ca === 0 ? '' : ca}
                                   onChange={(e) =>
                                     handleScoreChange(student.id, subject.id, 'ca', e.target.value)
                                   }
                                   className="w-full min-w-[80px] text-center"
-                                  placeholder="0"
+                                  placeholder="CA"
                                 />
                               </TableCell>
                               <TableCell className="p-2">
@@ -293,12 +293,12 @@ export default function ScoreEntryPage() {
                                   type="number"
                                   min="0"
                                   max="100"
-                                  value={exam}
+                                  value={exam === 0 ? '' : exam}
                                   onChange={(e) =>
                                     handleScoreChange(student.id, subject.id, 'exam', e.target.value)
                                   }
                                   className="w-full min-w-[80px] text-center"
-                                  placeholder="0"
+                                  placeholder="Exam"
                                 />
                               </TableCell>
                               <TableCell className="font-semibold text-center text-lg">{total}</TableCell>
