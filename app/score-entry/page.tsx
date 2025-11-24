@@ -88,10 +88,15 @@ export default function ScoreEntryPage() {
       };
     });
 
+    // Calculate average
+    const totalSum = studentScores.reduce((sum, score) => sum + score.total, 0);
+    const average = subjects.length > 0 ? totalSum / subjects.length : 0;
+
     return {
       student,
       scores: studentScores,
       classInfo,
+      average,
     };
   };
 
@@ -253,11 +258,22 @@ export default function ScoreEntryPage() {
                         <TableHead className="min-w-[100px] text-center">Exam</TableHead>
                         <TableHead className="min-w-[90px] text-center">Total</TableHead>
                         <TableHead className="min-w-[90px] text-center">Grade</TableHead>
+                        <TableHead className="min-w-[100px] text-center">Average</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {students.map((student) =>
-                        subjects.map((subject, index) => {
+                      {students.map((student) => {
+                        // Calculate average for this student
+                        const studentScores = subjects.map((subj) => {
+                          const sc = getScore(student.id, subj.id);
+                          const ca = sc?.ca || 0;
+                          const exam = sc?.exam || 0;
+                          return calculateTotal(ca, exam);
+                        });
+                        const totalSum = studentScores.reduce((sum, total) => sum + total, 0);
+                        const average = subjects.length > 0 ? (totalSum / subjects.length).toFixed(2) : '0.00';
+
+                        return subjects.map((subject, index) => {
                           const score = getScore(student.id, subject.id);
                           const ca = score?.ca || 0;
                           const exam = score?.exam || 0;
@@ -285,7 +301,7 @@ export default function ScoreEntryPage() {
                                     handleScoreChange(student.id, subject.id, 'ca', e.target.value)
                                   }
                                   className="w-full min-w-[80px] text-center"
-                                  placeholder="CA"
+                                  placeholder="0"
                                 />
                               </TableCell>
                               <TableCell className="p-2">
@@ -298,7 +314,7 @@ export default function ScoreEntryPage() {
                                     handleScoreChange(student.id, subject.id, 'exam', e.target.value)
                                   }
                                   className="w-full min-w-[80px] text-center"
-                                  placeholder="Exam"
+                                  placeholder="0"
                                 />
                               </TableCell>
                               <TableCell className="font-semibold text-center text-lg">{total}</TableCell>
@@ -319,10 +335,18 @@ export default function ScoreEntryPage() {
                                   {grade}
                                 </span>
                               </TableCell>
+                              {index === 0 && (
+                                <TableCell 
+                                  rowSpan={subjects.length} 
+                                  className="font-bold text-center text-lg text-blue-600 bg-blue-50"
+                                >
+                                  {average}
+                                </TableCell>
+                              )}
                             </TableRow>
                           );
-                        })
-                      )}
+                        });
+                      })}
                     </TableBody>
                   </Table>
                 </div>

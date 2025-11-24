@@ -34,6 +34,7 @@ export interface StudentResult {
     grade: string;
   }[];
   classInfo: ClassInfo;
+  average: number;
 }
 
 export type Grade = 'A' | 'B' | 'C' | 'D' | 'F';

@@ -75,16 +75,22 @@ export function PDFGenerator({ result }: PDFGeneratorProps) {
     // Draw line after table
     yPosition += 5;
     doc.line(20, yPosition, 190, yPosition);
-    yPosition += 20;
+    yPosition += 10;
+
+    // Average Score
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Average Score: ${result.average.toFixed(2)}`, 20, yPosition);
+    yPosition += 15;
 
     // Grading System
-    yPosition += 10;
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Grading System:', 20, yPosition);
-    yPosition += 6;
-    doc.setFont('helvetica', 'normal');
-    doc.text('A: 90-100  |  B: 80-89  |  C: 70-79  |  D: 60-69  |  F: 0-59', 20, yPosition);
+    // yPosition += 10;
+    // doc.setFontSize(10);
+    // doc.setFont('helvetica', 'bold');
+    // doc.text('Grading System:', 20, yPosition);
+    // yPosition += 6;
+    // doc.setFont('helvetica', 'normal');
+    // doc.text('A: 90-100  |  B: 80-89  |  C: 70-79  |  D: 60-69  |  F: 0-59', 20, yPosition);
 
     // Signature Section
     yPosition += 20;
